@@ -12,8 +12,9 @@ class MaterialSpeedDial extends StatefulWidget {
   final Color overlayColor;
   final double overlayOpacity;
   final Duration duration;
-  final AnimatedIconData animatedIcon;
-  final double animatedIconSize;
+  final Widget firstChild;
+  final Widget secondChild;
+  final Color splashColor;
 
   MaterialSpeedDial({
     Key key,
@@ -25,8 +26,9 @@ class MaterialSpeedDial extends StatefulWidget {
     this.overlayColor = Colors.white,
     this.overlayOpacity = 0.7,
     this.duration = const Duration(milliseconds: 200),
-    this.animatedIcon = AnimatedIcons.menu_close,
-    this.animatedIconSize = 32,
+    @required this.firstChild,
+    @required this.secondChild,
+    this.splashColor,
   }) : super(key: key);
 
   @override
@@ -38,6 +40,7 @@ class MaterialSpeedDialState extends State<MaterialSpeedDial>
   AnimationController _animationController;
   var _isChildrenVisible = false;
   final _childrenAnimations = <Animation<double>>[];
+  var _crossFadeState = CrossFadeState.showFirst;
 
   @override
   void initState() {
@@ -102,10 +105,12 @@ class MaterialSpeedDialState extends State<MaterialSpeedDial>
                 child: FloatingActionButton(
                   heroTag: null,
                   tooltip: widget.tooltip,
-                  child: AnimatedIcon(
-                    icon: widget.animatedIcon,
-                    progress: _animationController,
-                    size: widget.animatedIconSize,
+                  splashColor: widget.splashColor,
+                  child: AnimatedCrossFade(
+                    firstChild: widget.firstChild,
+                    secondChild: widget.secondChild,
+                    crossFadeState: _crossFadeState,
+                    duration: widget.duration,
                   ),
                   onPressed: _onPressed,
                 ),
@@ -145,6 +150,12 @@ class MaterialSpeedDialState extends State<MaterialSpeedDial>
 
     setState(() {
       _isChildrenVisible = !_isChildrenVisible;
+
+      if (_crossFadeState == CrossFadeState.showFirst) {
+        _crossFadeState = CrossFadeState.showSecond;
+      } else {
+        _crossFadeState = CrossFadeState.showFirst;
+      }
     });
   }
 
