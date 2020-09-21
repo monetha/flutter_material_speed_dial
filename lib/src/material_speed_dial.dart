@@ -87,6 +87,7 @@ class MaterialSpeedDialState extends State<MaterialSpeedDial>
                   color: widget.overlayColor,
                   opacity: widget.overlayOpacity,
                   animation: _animationController,
+                  onPressed: _onBackgroundPressed,
                 ),
               ),
             ),
@@ -112,7 +113,7 @@ class MaterialSpeedDialState extends State<MaterialSpeedDial>
                     crossFadeState: _crossFadeState,
                     duration: widget.duration,
                   ),
-                  onPressed: _onPressed,
+                  onPressed: _onFabPressed,
                 ),
               )
             ],
@@ -129,15 +130,26 @@ class MaterialSpeedDialState extends State<MaterialSpeedDial>
       _animationController.reverse();
     }
 
-    setState(() => _isChildrenVisible = false);
+    setState(() {
+      _isChildrenVisible = false;
+      _changeCrossFadeState();
+    });
   }
 
   void open() {
     _animationController.forward();
-    setState(() => _isChildrenVisible = true);
+
+    setState(() {
+      _isChildrenVisible = true;
+      _changeCrossFadeState();
+    });
   }
 
-  void _onPressed() {
+  void _onBackgroundPressed() {
+    close();
+  }
+
+  void _onFabPressed() {
     if (widget.onPressed != null) {
       widget.onPressed();
     }
@@ -150,13 +162,16 @@ class MaterialSpeedDialState extends State<MaterialSpeedDial>
 
     setState(() {
       _isChildrenVisible = !_isChildrenVisible;
-
-      if (_crossFadeState == CrossFadeState.showFirst) {
-        _crossFadeState = CrossFadeState.showSecond;
-      } else {
-        _crossFadeState = CrossFadeState.showFirst;
-      }
+      _changeCrossFadeState();
     });
+  }
+
+  void _changeCrossFadeState() {
+    if (_crossFadeState == CrossFadeState.showFirst) {
+      _crossFadeState = CrossFadeState.showSecond;
+    } else {
+      _crossFadeState = CrossFadeState.showFirst;
+    }
   }
 
   Widget _buildAnimation(BuildContext context, Widget child) {
