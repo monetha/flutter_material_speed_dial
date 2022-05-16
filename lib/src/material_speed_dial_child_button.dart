@@ -6,12 +6,12 @@ class MaterialSpeedDialChildButton extends FloatingActionButton {
   final Color buttonTextColor;
 
   MaterialSpeedDialChildButton({
-    Key key,
-    bool mini,
-    Widget child,
-    Function onPressed,
-    String tooltip,
-    this.buttonText,
+    Key? key,
+    required bool mini,
+    required this.buttonText,
+    Widget? child,
+    VoidCallback? onPressed,
+    String? tooltip,
     this.buttonBackgroundColor = Colors.white,
     this.buttonTextColor = Colors.black,
   }) : super(

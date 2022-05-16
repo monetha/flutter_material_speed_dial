@@ -4,8 +4,8 @@ import 'background_overlay.dart';
 import 'material_speed_dial_child_button.dart';
 
 class MaterialSpeedDial extends StatefulWidget {
-  final Function onPressed;
-  final String tooltip;
+  final Function? onPressed;
+  final String? tooltip;
   final List<MaterialSpeedDialChildButton> children;
   final bool visible;
   final bool overlay;
@@ -14,20 +14,20 @@ class MaterialSpeedDial extends StatefulWidget {
   final Duration duration;
   final Widget firstChild;
   final Widget secondChild;
-  final Color splashColor;
+  final Color? splashColor;
 
   MaterialSpeedDial({
-    Key key,
+    Key? key,
     this.onPressed,
     this.tooltip,
-    @required this.children,
+    required this.children,
     this.visible = true,
     this.overlay = true,
     this.overlayColor = Colors.white,
     this.overlayOpacity = 0.7,
     this.duration = const Duration(milliseconds: 200),
-    @required this.firstChild,
-    @required this.secondChild,
+    required this.firstChild,
+    required this.secondChild,
     this.splashColor,
   }) : super(key: key);
 
@@ -37,7 +37,7 @@ class MaterialSpeedDial extends StatefulWidget {
 
 class MaterialSpeedDialState extends State<MaterialSpeedDial>
     with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
+  late AnimationController _animationController;
   var _isChildrenVisible = false;
   final _childrenAnimations = <Animation<double>>[];
   var _crossFadeState = CrossFadeState.showFirst;
@@ -151,7 +151,7 @@ class MaterialSpeedDialState extends State<MaterialSpeedDial>
 
   void _onFabPressed() {
     if (widget.onPressed != null) {
-      widget.onPressed();
+      widget.onPressed!();
     }
 
     if (_isChildrenVisible) {
@@ -174,7 +174,7 @@ class MaterialSpeedDialState extends State<MaterialSpeedDial>
     }
   }
 
-  Widget _buildAnimation(BuildContext context, Widget child) {
+  Widget _buildAnimation(BuildContext context, Widget? child) {
     return IgnorePointer(
       ignoring: !_isChildrenVisible,
       child: Column(
