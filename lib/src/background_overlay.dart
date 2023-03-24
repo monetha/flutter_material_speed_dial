@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class BackgroundOverlay extends AnimatedWidget {
   final Color color;
   final double opacity;
-  final Function onPressed;
+  final VoidCallback? onPressed;
 
   BackgroundOverlay({
-    Key key,
-    @required Animation<double> animation,
-    this.color,
-    this.opacity,
+    Key? key,
+    required Animation<double> animation,
+    required this.opacity,
+    required this.color,
     this.onPressed,
   }) : super(key: key, listenable: animation);
 
